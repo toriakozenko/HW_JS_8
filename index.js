@@ -156,25 +156,64 @@
 	// });
 
   //Task "countries and cities"
-  fetch('https://raw.githubusercontent.com/russ666/all-countries-and-cities-json/master/countries.min.json')
+  // fetch('https://raw.githubusercontent.com/russ666/all-countries-and-cities-json/master/countries.min.json')
+  // .then(res => res.json())
+  // .then(data => {
+	// 	console.log(data);
+  //   const countries = document.getElementById("countries");
+  //   const cities = document.getElementById("cities");
+
+  //   for (const country in data) {
+  //     let option = document.createElement('option');
+  //     option.innerText = country;
+  //     countries.append(option);
+  //   }
+		
+	// 	for (const city of data["Afghanistan"]) {
+	// 		let option = document.createElement('option');
+	// 		option.innerText = city;
+	// 		cities.append(option);
+	// 	}
+		
+  //   const updateCities = () => {
+	// 		let option = document.createElement('option');
+  //     option.innerText = "";
+  //     option.innerText = data[countries.value];
+  //     cities.append(option);
+  //   };
+  //   countries.onchange = () => updateCities(); 
+  // })
+
+	fetch('https://raw.githubusercontent.com/russ666/all-countries-and-cities-json/master/countries.min.json')
   .then(res => res.json())
   .then(data => {
     const countries = document.getElementById("countries");
     const cities = document.getElementById("cities");
+
+		const buildCities = (allCities) => {
+			for (const city of allCities){
+				let option = document.createElement('option');
+				option.innerText = city; 
+				cities.append(option);
+			}
+		}
+
+		const updateCities = () => {
+			cities.innerHTML = '';
+
+			buildCities(data[countries.value]);
+		}
+
     for (const country in data) {
       let option = document.createElement('option');
       option.innerText = country;
       countries.append(option);
     }
 
-    let option = document.createElement('option');
-    option.innerText = data["Afghanistan"];
-    cities.append(option);
+		buildCities(data[Object.keys(data)[0]]);
 
-    const updateCities = () => {
-      option.innerText = "";
-      option.innerText = data[countries.value];
-      cities.append(option);
-    };
-    countries.onchange = () => updateCities(); 
+		countries.onchange = () => updateCities(); 
   })
+
+
+
